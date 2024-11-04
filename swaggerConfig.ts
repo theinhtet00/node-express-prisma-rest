@@ -1,4 +1,6 @@
 import authDocs from "./src/routes/docs/authRoutesDocs";
+import components from "./src/routes/docs/components";
+import productDocs from "./src/routes/docs/productRoutesDocs";
 
 const swaggerOptions = {
   swaggerDefinition: {
@@ -10,8 +12,10 @@ const swaggerOptions = {
     },
     paths: {
       ...authDocs,
+      ...productDocs,
     },
     components: {
+      ...components,
       securitySchemes: {
         bearerAuth: {
           type: "http",

@@ -7,29 +7,18 @@ const authDocs = {
         required: true,
         content: {
           "application/json": {
-            schema: {
-              type: "object",
-              properties: {
-                name: {
-                  type: "string",
-                  description: "The user's name",
-                },
-                email: {
-                  type: "string",
-                  description: "The user's email",
-                },
-                password: {
-                  type: "string",
-                  description: "The user's password",
-                },
-              },
-            },
+            schema: { $ref: "#/components/userDto" },
           },
         },
       },
       responses: {
-        200: {
-          description: "User registered successfully",
+        "200": {
+          description: "Product created successfully.",
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/User" },
+            },
+          },
         },
         400: {
           description: "Bad request",
@@ -45,25 +34,18 @@ const authDocs = {
         required: true,
         content: {
           "application/json": {
-            schema: {
-              type: "object",
-              properties: {
-                email: {
-                  type: "string",
-                  description: "The user's email",
-                },
-                password: {
-                  type: "string",
-                  description: "The user's password",
-                },
-              },
-            },
+            schema: { $ref: "#/components/login" },
           },
         },
       },
       responses: {
         200: {
           description: "User registered successfully",
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/login" },
+            },
+          },
         },
         400: {
           description: "Bad request",
