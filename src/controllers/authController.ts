@@ -14,6 +14,9 @@ export const register = async (
 ): Promise<Response> => {
   const { name, email, password } = req.body;
   try {
+    const existedUser = await prisma.user.findUnique({ where: { email } });
+    if (existedUser)
+      return res.status(403).json({ message: "Email already registered!" });
     const hashedPassword = await hashPassword(password);
 
     const user = await prisma.user.create({
@@ -28,7 +31,7 @@ export const register = async (
       user,
     });
   } catch (error) {
-    return res.status(500).json({
+    return res.status(401).json({
       message: "User registration failed",
     });
   }
@@ -38,15 +41,15 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
   const { email, password } = req.body;
   try {
     const user = await prisma.user.findUnique({ where: { email } });
-    if (!user) return res.status(404).json({ message: "Invalid Crendentials" });
+    if (!user) return res.status(401).json({ message: "Invalid Crendentials" });
 
     const isMatch = comparePassword(password, user.password);
     if (!isMatch)
-      return res.status(404).json({ message: "Invalid Credentials" });
+      return res.status(401).json({ message: "Invalid Credentials" });
 
     const token = generateToken(user.id);
     return res.status(200).json({ token });
   } catch (error) {
-    return res.status(404).json({ message: "Login Failed" });
+    return res.status(401).json({ message: "Login Failed" });
   }
 };
